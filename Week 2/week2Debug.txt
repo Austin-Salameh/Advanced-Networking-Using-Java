@@ -1,0 +1,9 @@
+Week 2 debug.  There are 5 errors in the code!
+
+String query = DELETE FROM Product " +
+
+                          WHERE ProductCode = ' " + produtCode + " ' "
+
+Statement = connection.createStatement():
+
+int rowCount = statement.executeUpdate(query);

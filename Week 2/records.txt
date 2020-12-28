@@ -1,0 +1,359 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.net.URL;
+import java.sql.*;
+import oracle.jdbc.OracleDriver;
+import oracle.jdbc.OracleResultSetMetaData;
+
+
+public class Assignment_2 extends JFrame{
+
+    private JButton buttonPrev=new JButton("Prev");
+    private JButton buttonReset=new JButton("Reset");
+    private JButton buttonNext=new JButton("Next");
+
+    private JLabel labelHeader=new JLabel("Database Browser",JLabel.CENTER);
+    private JLabel labelidNum=new JLabel("ID");
+    private JLabel labelFName=new JLabel("First Name");
+    private JLabel labelLName=new JLabel("Last Name");
+    private JLabel labelStreet=new JLabel("Street");
+    private JLabel labelCity=new JLabel("City");
+    private JLabel labelState=new JLabel("State");
+    private JLabel labelZip=new JLabel("Zip");
+
+    private JTextField textFieldIDNum=new JTextField();
+    private JTextField textFieldFName=new JTextField();
+    private JTextField textFieldLName=new JTextField();
+    private JTextField textFieldStreet=new JTextField();
+    private JTextField textFieldCity=new JTextField();
+    private JTextField textFieldState=new JTextField();
+    private JTextField textFieldZip=new JTextField();
+
+    int arrayPointer = 1;
+
+    public Assignment_2(String title){
+
+        super(title);
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+        JPanel cp=(JPanel)getContentPane();
+
+        labelHeader.setFont(new Font("TimesRoman",Font.BOLD,24));
+        labelHeader.setBounds(40,10,300,50);
+
+        buttonPrev.setBounds(30,290,80,25);
+        buttonReset.setBounds(150,290,80,25);
+        buttonNext.setBounds(270,290,80,25);
+
+        labelidNum.setBounds(10,80,80,25);
+        labelLName.setBounds(10,110,80,25);
+        labelFName.setBounds(10,140,80,25);
+        labelStreet.setBounds(10,170,80,25);
+        labelCity.setBounds(10,200,80,25);
+        labelState.setBounds(10,230,80,25);
+        labelZip.setBounds(10,260,80,25);
+
+        textFieldIDNum.setBounds(120,80,250,25);
+        textFieldLName.setBounds(120,110,250,25);
+        textFieldFName.setBounds(120,140,250,25);
+        textFieldStreet.setBounds(120,170,250,25);
+        textFieldCity.setBounds(120,200,250,25);
+        textFieldState.setBounds(120,230,250,25);
+        textFieldZip.setBounds(120,260,250,25);
+
+        cp.setLayout(null);
+        cp.add(labelHeader);
+        cp.add(buttonPrev);
+        cp.add(buttonReset);
+        cp.add(buttonNext);
+        cp.add(labelidNum);
+        cp.add(textFieldIDNum);
+        cp.add(labelLName);
+        cp.add(textFieldLName);
+        cp.add(labelFName);
+        cp.add(textFieldFName);
+        cp.add(labelStreet);
+        cp.add(textFieldStreet);
+        cp.add(labelCity);
+        cp.add(textFieldCity);
+        cp.add(labelState);
+        cp.add(textFieldState);
+        cp.add(labelZip);
+        cp.add(textFieldZip);
+
+    private ActionListener buttonListener = new ActionListener(){
+        public void actionPerformed(ActionEvent e){
+            String buttonSelected = ((JButton)e.getSource()).getText();
+ 
+            if(buttonSelected.equals("Reset")){
+                setFields(selectData.getFirst());
+            }     
+
+            if(buttonSelected.equals("Prev")){
+                setFields(selectData.getPrevious());
+            }     
+
+            if(buttonSelected.equals("Next")){
+                setFields(selectData.getNext());
+            }         
+        }
+    };
+    
+    private void setFields(DataClass personData){
+   
+		textFieldIDNum.setText(rs.getString("ID"));
+                textFieldLName.setText(rs.getString("LASTNAME"));
+                textFieldFName.setText(rs.getString("FIRSTNAME"));
+                textFieldStreet.setText(rs.getString("STREET"));
+                textFieldCity.setText(rs.getString("CITY"));
+                textFieldState.setText(rs.getString("STATE"));
+                textFieldZip.setText(rs.getString("ZIP"));
+    }
+    
+    private void shutDown(){
+        int returnVal=JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?");
+
+        if(returnVal==JOptionPane.YES_OPTION){
+
+            System.exit(0);
+        }
+    }
+    
+     public static void main(String args[]){
+        Assignment_2Source a2 = new Assignment_2Source("Database Browser");
+
+        a2.setSize(400,350);
+        a2.setVisible(true);
+    }
+
+public class Records{
+
+  String idNum, LName, FName, Street, City, State, Zip;
+
+public String getidNum(){
+
+    return idNum;
+  }
+
+public void setidNum(String idNum){
+
+    this.idNum = new String(idNum);
+  }
+
+public String LName(){
+
+    return LName;
+  }
+
+public void setLName(String LName){
+
+    this.LName = new String(LName);
+  }
+
+public String fName(){
+
+    return fName;
+  }
+
+public void setfName(String fName){
+
+    this.fName = new String(fName);
+  }
+  
+public String Street(){
+
+    return Street;
+  }
+
+public void setStreet(String Street){
+
+    this.Street = new String(Street);
+  }
+
+public String getCity() {
+        return city;
+    }
+
+public void setCity(String city) {
+        this.city = new String(city);
+    }
+    
+public String getState() {
+        return state;
+    }
+    
+public void setState(String state) {
+        this.state = new String(state);
+    }
+    
+public String getZip() {
+        return zipCode;
+    }
+    
+public void setZip(String zipCode) {
+        this.zipCode = new String(zipCode);
+    }
+
+
+
+  public String toString(){
+
+    return new String(idNum.toString().trim() + ", " + 
+                      city.toString().trim() + ", " + 
+                      year_T.toString().trim() + ", " + 
+                      loserTeam.toString().trim() + ", " + 
+                      loserCity.toString().trim());
+  }
+}
+
+class SelectData {
+    
+// JDBC Variables
+    Connection con;
+    Statement stmt;
+    ResultSet rs;
+    
+    public SelectData() {
+        
+        try {
+            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "student1", "pass");
+            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        } 
+        catch (Exception e) {
+            System.out.println("Error connection to database.");
+            System.exit(0);
+        }
+        
+        try {
+            rs = stmt.executeQuery("SELECT * FROM ADDRESS");
+        }
+        catch(SQLException e) {
+            System.out.println(e);
+            System.out.println("Result Request Failed");
+        }
+    }
+
+public Records getFirst() {  
+        Records Data = new Records();
+
+        try {
+            rs.first();
+
+            Data.setidNum(rs.getString(rs.findColumn("IDNUM")));
+	    Data.setLName(rs.getString(rs.findColumn("LASTNAME")));
+            Data.setFName(rs.getString(rs.findColumn("FIRSTNAME")));
+            Data.setAddress(rs.getString(rs.findColumn("STREET")));
+            Data.setCity(rs.getString(rs.findColumn("CITY")));
+            Data.setState(rs.getString(rs.findColumn("STATE")));
+            Data.setZip(rs.getString(rs.findColumn("ZIP")));
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        return Data;
+    }
+
+public Records getNext() {  
+        Records Data = new Records();
+
+        try {
+            rs.next();
+
+            Data.setidNum(rs.getString(rs.findColumn("IDNUM")));
+	    Data.setLName(rs.getString(rs.findColumn("LASTNAME")));
+            Data.setFName(rs.getString(rs.findColumn("FIRSTNAME")));
+            Data.setAddress(rs.getString(rs.findColumn("STREET")));
+            Data.setCity(rs.getString(rs.findColumn("CITY")));
+            Data.setState(rs.getString(rs.findColumn("STATE")));
+            Data.setZip(rs.getString(rs.findColumn("ZIP")));
+        }
+        catch(SQLException e) {
+            return this.getFirst();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        return Data;
+    }
+
+
+public Records getPrevious() {  
+        Records Data = new Records();
+
+        try {
+            rs.previous();
+
+            Data.setidNum(rs.getString(rs.findColumn("IDNUM")));
+	    Data.setLName(rs.getString(rs.findColumn("LASTNAME")));
+            Data.setFName(rs.getString(rs.findColumn("FIRSTNAME")));
+            Data.setAddress(rs.getString(rs.findColumn("STREET")));
+            Data.setCity(rs.getString(rs.findColumn("CITY")));
+            Data.setState(rs.getString(rs.findColumn("STATE")));
+            Data.setZip(rs.getString(rs.findColumn("ZIP")));
+        }
+        catch(SQLException e) {
+            return this.getLast();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        return Data;
+    }
+
+public Records getLast() {  
+        Records Data = new Records();
+
+        try {
+            rs.last();
+
+            Data.setidNum(rs.getString(rs.findColumn("IDNUM")));
+	    Data.setLName(rs.getString(rs.findColumn("LASTNAME")));
+            Data.setFName(rs.getString(rs.findColumn("FIRSTNAME")));
+            Data.setAddress(rs.getString(rs.findColumn("STREET")));
+            Data.setCity(rs.getString(rs.findColumn("CITY")));
+            Data.setState(rs.getString(rs.findColumn("STATE")));
+            Data.setZip(rs.getString(rs.findColumn("ZIP")));
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        return Data;
+    }
+
+  public void close(){
+
+    try{
+      stmt.close();
+      con.close();
+    }
+    catch(SQLException e){
+
+      System.out.println("Connection close failed");
+    }
+  }
+
+  public static void main(String args[]) {
+
+    SelectData selectMyData = new SelectData();
+
+    System.out.println(selectMyData.getFirst());
+    System.out.println(selectMyData.getLast());
+
+    selectMyData.close();
+  }
+}
+
+ addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                shutDown();
+            }
+        });
+        
+        buttonPrev.addActionListener(buttonListener);
+        buttonReset.addActionListener(buttonListener);
+        buttonNext.addActionListener(buttonListener);
+    }
+}

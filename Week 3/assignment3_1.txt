@@ -1,0 +1,57 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = {"/Assignment_3_1"})
+public class Assignment_3_1 extends HttpServlet {
+    
+    static Charset assignment3_1 = Charset.forName("US-ASCII");
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+      
+        response.setContentType("text/html");
+
+    PrintWriter output = response.getWriter();
+
+    output.println("<html><head><title>Assignment_3_1</title></head><body><div>");
+
+    readFileContents(output);
+
+    output.println("</div></body></html>");
+  }
+    
+  private synchronized void readFileContents(PrintWriter output){
+
+    try{
+
+      Path source = Paths.get("C:/Temp/servlet1.dat");
+
+      List <String> servlet1Contents = null;
+
+      servlet1Contents = Files.readAllLines(source, assignment3_1);      
+
+      if(servlet1Contents != null){
+
+        for(String line : servlet1Contents){
+
+          output.println(line+ "<br />\n");
+        }
+      }
+    }
+    catch(IOException e){
+       
+
+    }
+  }
+}

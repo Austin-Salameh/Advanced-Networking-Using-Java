@@ -1,0 +1,221 @@
+import javax.swing.*;
+import java.awt.*;
+import java.sql.*;
+
+
+public class Assignment_2 extends JFrame{
+
+    private JButton buttonPrev=new JButton("Prev");
+    private JButton buttonReset=new JButton("Reset");
+    private JButton buttonNext=new JButton("Next");
+
+    private JLabel labelHeader=new JLabel("Database Browser",JLabel.CENTER);
+    private JLabel labelidNum=new JLabel("ID");
+    private JLabel labelFName=new JLabel("First Name");
+    private JLabel labelLName=new JLabel("Last Name");
+    private JLabel labelStreet=new JLabel("Street");
+    private JLabel labelCity=new JLabel("City");
+    private JLabel labelState=new JLabel("State");
+    private JLabel labelZip=new JLabel("Zip");
+
+    private JTextField textFieldIDNum=new JTextField();
+    private JTextField textFieldFName=new JTextField();
+    private JTextField textFieldLName=new JTextField();
+    private JTextField textFieldStreet=new JTextField();
+    private JTextField textFieldCity=new JTextField();
+    private JTextField textFieldState=new JTextField();
+    private JTextField textFieldZip=new JTextField();
+
+    int arrayPointer = 1;
+
+    public Assignment_2(String title){
+
+        super(title);
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+        JPanel cp=(JPanel)getContentPane();
+
+        labelHeader.setFont(new Font("TimesRoman",Font.BOLD,24));
+        labelHeader.setBounds(40,10,300,50);
+
+        buttonPrev.setBounds(30,290,80,25);
+        buttonReset.setBounds(150,290,80,25);
+        buttonNext.setBounds(270,290,80,25);
+
+        labelidNum.setBounds(10,80,80,25);
+        labelLName.setBounds(10,110,80,25);
+        labelFName.setBounds(10,140,80,25);
+        labelStreet.setBounds(10,170,80,25);
+        labelCity.setBounds(10,200,80,25);
+        labelState.setBounds(10,230,80,25);
+        labelZip.setBounds(10,260,80,25);
+
+        textFieldIDNum.setBounds(120,80,250,25);
+        textFieldLName.setBounds(120,110,250,25);
+        textFieldFName.setBounds(120,140,250,25);
+        textFieldStreet.setBounds(120,170,250,25);
+        textFieldCity.setBounds(120,200,250,25);
+        textFieldState.setBounds(120,230,250,25);
+        textFieldZip.setBounds(120,260,250,25);
+
+        cp.setLayout(null);
+        cp.add(labelHeader);
+        cp.add(buttonPrev);
+        cp.add(buttonReset);
+        cp.add(buttonNext);
+        cp.add(labelidNum);
+        cp.add(textFieldIDNum);
+        cp.add(labelLName);
+        cp.add(textFieldLName);
+        cp.add(labelFName);
+        cp.add(textFieldFName);
+        cp.add(labelStreet);
+        cp.add(textFieldStreet);
+        cp.add(labelCity);
+        cp.add(textFieldCity);
+        cp.add(labelState);
+        cp.add(textFieldState);
+        cp.add(labelZip);
+        cp.add(textFieldZip);
+
+        //Get length of database
+        int count = 0;
+        try {
+            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+            String countStatement = "select * from address";
+            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "student1","pass");
+            Statement stmt = con.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(countStatement);
+            rs.next();
+            count = rs.getInt(1);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        final int dbCount = count;
+
+        //Set first array view upon start of program
+        setFields(arrayPointer);
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+
+            shutDown();
+            }
+        });
+
+        buttonPrev.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+                if(arrayPointer > 0){
+                    --arrayPointer;
+                }
+                else{
+                    
+                    arrayPointer = dbCount;
+                }
+
+                setFields(arrayPointer);
+            }
+        });
+
+        buttonNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                
+                if(arrayPointer > 0) {
+                    ++arrayPointer;
+                } 
+                else{ arrayPointer = 1;
+                }
+
+                setFields(arrayPointer);
+            }
+        });
+        
+        buttonReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                arrayPointer = 1;
+
+                setFields(arrayPointer);
+            }
+        });
+    }
+
+    private void setFields(int position){
+
+        try {
+
+            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+    
+            //Connect to the URL
+            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "student1","pass");
+    
+            Statement stmt = con.createStatement();
+    
+            String selectStmt = 
+            "SELECT ID, LASTNAME, FIRSTNAME, STREET, CITY, STATE, ZIP " +
+            "FROM address " +
+            "WHERE ID = " + position;
+            
+            ResultSet rs = stmt.executeQuery(selectStmt);
+
+            while(rs.next()) {
+    
+                textFieldIDNum.setText(rs.getString("ID"));
+                textFieldLName.setText(rs.getString("LASTNAME"));
+                textFieldFName.setText(rs.getString("FIRSTNAME"));
+                textFieldStreet.setText(rs.getString("STREET"));
+                textFieldCity.setText(rs.getString("CITY"));
+                textFieldState.setText(rs.getString("STATE"));
+                textFieldZip.setText(rs.getString("ZIP"));
+            }
+
+            rs.close();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void shutDown(){
+
+        int returnVal=JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?");
+
+        if(returnVal==JOptionPane.YES_OPTION){
+
+        System.exit(0);
+        }
+    }
+
+    public static void main(String args[]){
+        Connection con = null;
+        Statement stmt = null;
+
+        try {
+            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+    
+            //Connect to the URL
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "student1","pass");
+        
+            //a lttle debug here
+            System.out.println("Connection established - now executing a select");
+        
+            // Execute a SELECT statement
+            stmt = con.createStatement();
+        
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        Assignment_2 a2 = new Assignment_2("Database Browser");
+
+        a2.setSize(450,400);
+        a2.setVisible(true);
+    }
+}

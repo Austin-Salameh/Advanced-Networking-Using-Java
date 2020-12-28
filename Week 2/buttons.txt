@@ -1,0 +1,44 @@
+ addWindowListener(new java.awt.event.WindowAdapter() {
+
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+
+            shutDown();
+            }
+        });
+
+        buttonPrev.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+                if(arrayPointer > 0){
+                    --arrayPointer;
+                }
+                else{
+                    
+                    arrayPointer = ;
+                }
+
+                setFields(arrayPointer);
+            }
+        });
+
+        buttonNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ++arrayPointer;
+                
+                if(arrayPointer > dbCount) {
+                    arrayPointer = 1;
+                }
+
+                setFields(arrayPointer);
+            }
+        });
+        
+        buttonReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                arrayPointer = 1;
+
+                setFields(arrayPointer);
+            }
+        });
+    }
