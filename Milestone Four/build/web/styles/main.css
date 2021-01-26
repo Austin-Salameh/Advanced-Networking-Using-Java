@@ -1,0 +1,25 @@
+/* 
+    Group Foxtrot :: Taylor Imhof, Austin Salameh, Kaitlan Roberts, Jason Christian
+    CIS 308/404 Milestone #4 Pilot Project
+    
+    File Name:      main.css
+    Created:        1/4/2021
+    Last Update:    1/9/2021
+
+    Description: This simple CSS file provides some styling to GetUserData.jsp
+*/
+form{
+    text-align: center;
+    width: 300px;
+    margin: auto;
+}
+
+.container{
+    text-align: center;
+    clear: both;
+}
+.container input{
+    text-align: center;
+    width: 100%;
+    clear: both;
+}

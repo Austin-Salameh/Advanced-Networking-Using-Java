@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+    Group Foxtrot :: Taylor Imhof, Austin Salameh, Kaitlan Roberts, Jason Christian
+    CIS 308/404 Milestone #4 Pilot Project
+    
+    File Name:      index.html
+    Created:        1/4/2021
+    Last Update:    1/9/2021
+
+    Description: This index.html serves as the main splash page to navigate to
+    all other parts of the application. This page provides five buttons that
+    allow the user to perform various database actions, such as creating tables,
+    inserting data (both same and user-supplied), displaying data, and dropping
+    tables.
+-->
+ 
+<html>
+    <head>
+        <title>BubsDubs</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+        <h1 style="color:blue; text-align: center; font-size: 90px;">BubsDubs
+            <img src="https://logo.stocklight.com/ASX/BUB.png" width="80" height="80">
+            <img src="https://pbs.twimg.com/profile_images/2108265783/ezimerchantsquare_400x400.png" width="80" height="80">
+        </h1>
+        </div>
+
+        <div style="text-align: center;">
+        
+            <!-- CreateInputTables.java navigation button -->
+            <form style="display: inline-block;" name="inputFrom" method="get" action="CreateInputTables">
+                <input type="submit" value="Create Tables">
+            </form>
+            
+            <!-- InsertData.jsp navigation button -->
+            <form style="display: inline-block;" name="inputForm" method="get" action="InsertData.jsp">
+                <input type="submit" value="Insert Data">
+            </form>
+            
+            <!-- DisplayData.java navigation button -->
+            <form style="display: inline-block;" name="inputForm" method="get" action="DisplayData">
+                <input type="submit" value="Display Data">
+            </form>
+            
+            <!-- DropTables.jsp navigation button -->
+            <form style="display: inline-block;" name="inputForm" method="post" action="DropTables.jsp">
+                <input type="submit" value="Drop Tables">
+            </form>
+            
+            <!-- GetUserData.jsp navigation button -->
+            <form style="display: inline-block;" name="inputForm" method="get" action="GetUserData.jsp">
+               <input type="submit" value="Add New Data">
+            </form>
+        </div>
+        
+        <!-- footer image -->
+        <div>
+            <h2 style="text-align: center">
+                <img src="https://previews.123rf.com/images/maradaisy/maradaisy1902/maradaisy190200008/116525877-baby-clothes-vector-kid-models-children-clothing-set-girl-boy-cloth-child-garment-apparel-isolated-o.jpg" alt ="babyClothes">
+            </h2>
+        </div>
+    </body>
+</html>
